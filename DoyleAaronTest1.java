@@ -24,7 +24,7 @@ class Rate {
     }
 
     public enum CarParkKind {
-        
+
     }
 }
 
@@ -32,22 +32,19 @@ class Period {
     private int startHour;
     private int endHour;
 
-    // Constructor with the signature as required
     public Period(int start, int end) {
 
     }
 
-    // Dummy method to simulate overlap
     public boolean overlaps(Period period) {
         return false; // Placeholder so it doesn't error
     }
 
-    // Dummy method to return duration
     public int duration() {
         return 1; // Placeholder so it doesn't error
     }
 }
-
+ // ChatGPT helped in making the dummy classes so that the tests won't error
 public class DoyleAaronTest1 {
-
+    
 }
