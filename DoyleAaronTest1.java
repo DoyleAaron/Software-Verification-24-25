@@ -46,5 +46,18 @@ class Period {
 }
  // ChatGPT helped in making the dummy classes so that the tests won't error
 public class DoyleAaronTest1 {
+    class periodTests {
+        @Test
+        void PeriodClassTestNumber1() {
     
+        }
+    }
+
+    class rateTests {
+        @Test
+        void RateClassTestNumber1() {
+
+        }
+    }
+
 }
