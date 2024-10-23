@@ -9,8 +9,9 @@ public class DoyleAaronTest1 {
     class periodTests {
         @Test
         void PeriodClassTestNumber1() {
+
             Period period = new Period(5, 10);
-            
+
         }
     }
 
