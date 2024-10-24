@@ -314,4 +314,186 @@ public class DoyleAaronRateTests {
                 () -> {new Rate(kind, normalPeriod, reducedPeriod, null, null);}
         );
     }
+
+    @Test
+    void CalculateMethodTestNumber1() {
+        // This is testing the price is calculating correctly for a full normal period stay
+        int normalPeriodStart = 9;
+        int normalPeriodEnd = 19;
+        int reducedPeriodStart = 20;
+        int reducedPeriodEnd = 24;
+        CarParkKind kind = CarParkKind.STAFF;
+
+        ArrayList<Period> normalPeriod = new ArrayList<>();
+        normalPeriod.add(new Period(normalPeriodStart, normalPeriodEnd));
+        BigDecimal hourlyNormalRate = new BigDecimal(2);
+
+        ArrayList<Period> reducedPeriod = new ArrayList<>();
+        reducedPeriod.add(new Period(reducedPeriodStart, reducedPeriodEnd));
+        BigDecimal hourlyReducedRate = new BigDecimal(1);
+
+        Rate rate = new Rate(kind, reducedPeriod, normalPeriod, hourlyNormalRate, hourlyReducedRate);
+
+        Period periodStay = new Period(10,12);
+
+        BigDecimal expectedOutcome = new BigDecimal("4.00"); // Putting this in quotations was suggested by chatGPT as I was having issues with the leading 0's at the end
+
+        assertEquals(expectedOutcome, rate.calculate(periodStay));
+    }
+
+    @Test
+    void CalculateMethodTestNumber2() {
+        // This is testing the price is calculating correctly for a full reduced period stay
+        int normalPeriodStart = 9;
+        int normalPeriodEnd = 19;
+        int reducedPeriodStart = 20;
+        int reducedPeriodEnd = 24;
+        CarParkKind kind = CarParkKind.STAFF;
+
+        ArrayList<Period> normalPeriod = new ArrayList<>();
+        normalPeriod.add(new Period(normalPeriodStart, normalPeriodEnd));
+        BigDecimal hourlyNormalRate = new BigDecimal(2);
+
+        ArrayList<Period> reducedPeriod = new ArrayList<>();
+        reducedPeriod.add(new Period(reducedPeriodStart, reducedPeriodEnd));
+        BigDecimal hourlyReducedRate = new BigDecimal(1);
+
+        Rate rate = new Rate(kind, reducedPeriod, normalPeriod, hourlyNormalRate, hourlyReducedRate);
+
+        Period periodStay = new Period(21,23);
+
+        BigDecimal expectedOutcome = new BigDecimal("2.00");
+
+        assertEquals(expectedOutcome, rate.calculate(periodStay));
+    }
+
+    @Test
+    void CalculateMethodTestNumber3() {
+        // This is testing the price is calculating correctly for a stay during the free period
+        int normalPeriodStart = 9;
+        int normalPeriodEnd = 19;
+        int reducedPeriodStart = 20;
+        int reducedPeriodEnd = 24;
+        CarParkKind kind = CarParkKind.STAFF;
+
+        ArrayList<Period> normalPeriod = new ArrayList<>();
+        normalPeriod.add(new Period(normalPeriodStart, normalPeriodEnd));
+        BigDecimal hourlyNormalRate = new BigDecimal(2);
+
+        ArrayList<Period> reducedPeriod = new ArrayList<>();
+        reducedPeriod.add(new Period(reducedPeriodStart, reducedPeriodEnd));
+        BigDecimal hourlyReducedRate = new BigDecimal(1);
+
+        Rate rate = new Rate(kind, reducedPeriod, normalPeriod, hourlyNormalRate, hourlyReducedRate);
+
+        Period periodStay = new Period(1,5);
+
+        BigDecimal expectedOutcome = new BigDecimal("0.00");
+
+        assertEquals(expectedOutcome, rate.calculate(periodStay));
+    }
+
+    @Test
+    void CalculateMethodTestNumber4() {
+        // This is testing the price is calculating correctly for a stay during the normal and reduced period
+        int normalPeriodStart = 9;
+        int normalPeriodEnd = 19;
+        int reducedPeriodStart = 20;
+        int reducedPeriodEnd = 24;
+        CarParkKind kind = CarParkKind.STAFF;
+
+        ArrayList<Period> normalPeriod = new ArrayList<>();
+        normalPeriod.add(new Period(normalPeriodStart, normalPeriodEnd));
+        BigDecimal hourlyNormalRate = new BigDecimal(2);
+
+        ArrayList<Period> reducedPeriod = new ArrayList<>();
+        reducedPeriod.add(new Period(reducedPeriodStart, reducedPeriodEnd));
+        BigDecimal hourlyReducedRate = new BigDecimal(1);
+
+        Rate rate = new Rate(kind, reducedPeriod, normalPeriod, hourlyNormalRate, hourlyReducedRate);
+
+        Period periodStay = new Period(19,21);
+
+        BigDecimal expectedOutcome = new BigDecimal("4.00");
+
+        assertEquals(expectedOutcome, rate.calculate(periodStay));
+    }
+
+    @Test
+    void CalculateMethodTestNumber5() {
+        // This is testing the price is calculating correctly for a stay during the normal and free period
+        int normalPeriodStart = 9;
+        int normalPeriodEnd = 19;
+        int reducedPeriodStart = 20;
+        int reducedPeriodEnd = 24;
+        CarParkKind kind = CarParkKind.STAFF;
+
+        ArrayList<Period> normalPeriod = new ArrayList<>();
+        normalPeriod.add(new Period(normalPeriodStart, normalPeriodEnd));
+        BigDecimal hourlyNormalRate = new BigDecimal(2);
+
+        ArrayList<Period> reducedPeriod = new ArrayList<>();
+        reducedPeriod.add(new Period(reducedPeriodStart, reducedPeriodEnd));
+        BigDecimal hourlyReducedRate = new BigDecimal(1);
+
+        Rate rate = new Rate(kind, reducedPeriod, normalPeriod, hourlyNormalRate, hourlyReducedRate);
+
+        Period periodStay = new Period(8,10);
+
+        BigDecimal expectedOutcome = new BigDecimal("2.00");
+
+        assertEquals(expectedOutcome, rate.calculate(periodStay));
+    }
+
+    @Test
+    void CalculateMethodTestNumber6() {
+        // This is testing the price is calculating correctly for a stay during the reduced and free period
+        int normalPeriodStart = 9;
+        int normalPeriodEnd = 19;
+        int reducedPeriodStart = 20;
+        int reducedPeriodEnd = 22;
+        CarParkKind kind = CarParkKind.STAFF;
+
+        ArrayList<Period> normalPeriod = new ArrayList<>();
+        normalPeriod.add(new Period(normalPeriodStart, normalPeriodEnd));
+        BigDecimal hourlyNormalRate = new BigDecimal(2);
+
+        ArrayList<Period> reducedPeriod = new ArrayList<>();
+        reducedPeriod.add(new Period(reducedPeriodStart, reducedPeriodEnd));
+        BigDecimal hourlyReducedRate = new BigDecimal(1);
+
+        Rate rate = new Rate(kind, reducedPeriod, normalPeriod, hourlyNormalRate, hourlyReducedRate);
+
+        Period periodStay = new Period(21,24);
+
+        BigDecimal expectedOutcome = new BigDecimal("1.00");
+
+        assertEquals(expectedOutcome, rate.calculate(periodStay));
+    }
+
+    @Test
+    void CalculateMethodTestNumber7() {
+        // This is testing the price is calculating correctly for a stay during the normal, reduced and free period
+        int normalPeriodStart = 9;
+        int normalPeriodEnd = 19;
+        int reducedPeriodStart = 20;
+        int reducedPeriodEnd = 22;
+        CarParkKind kind = CarParkKind.STAFF;
+
+        ArrayList<Period> normalPeriod = new ArrayList<>();
+        normalPeriod.add(new Period(normalPeriodStart, normalPeriodEnd));
+        BigDecimal hourlyNormalRate = new BigDecimal(2);
+
+        ArrayList<Period> reducedPeriod = new ArrayList<>();
+        reducedPeriod.add(new Period(reducedPeriodStart, reducedPeriodEnd));
+        BigDecimal hourlyReducedRate = new BigDecimal(1);
+
+        Rate rate = new Rate(kind, reducedPeriod, normalPeriod, hourlyNormalRate, hourlyReducedRate);
+
+        Period periodStay = new Period(8,21);
+
+        BigDecimal expectedOutcome = new BigDecimal("21.00");
+
+        assertEquals(expectedOutcome, rate.calculate(periodStay));
+    }
 }

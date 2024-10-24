@@ -1,74 +1,122 @@
 package cm;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 
 public class Rate {
     private final CarParkKind kind;
-    private final ArrayList<Period> reducedPeriods;
     private final ArrayList<Period> normalPeriods;
-    private final BigDecimal normalRate;
-    private final BigDecimal reducedRate;
+    private final ArrayList<Period> reducedPeriods;
+    private final BigDecimal hourlyNormalRate;
+    private final BigDecimal hourlyReducedRate;
 
-    // Constructor
     public Rate(CarParkKind kind, ArrayList<Period> reducedPeriods, ArrayList<Period> normalPeriods,
-                BigDecimal normalRate, BigDecimal reducedRate) {
-        // Validate rates
-        if (normalRate.compareTo(BigDecimal.ZERO) < 0 || normalRate.compareTo(BigDecimal.TEN) > 0) {
-            throw new IllegalArgumentException("Normal rate must be between 0 and 10.");
+                BigDecimal hourlyNormalRate, BigDecimal hourlyReducedRate) {
+        // Validate inputs
+        if (kind == null) {
+            throw new IllegalArgumentException("CarParkKind cannot be null");
         }
-        if (reducedRate.compareTo(BigDecimal.ZERO) < 0 || reducedRate.compareTo(BigDecimal.TEN) > 0) {
-            throw new IllegalArgumentException("Reduced rate must be between 0 and 10.");
+        if (hourlyNormalRate.compareTo(BigDecimal.ZERO) < 0 || hourlyNormalRate.compareTo(new BigDecimal(10)) > 0) {
+            throw new IllegalArgumentException("Normal rate must be between 0 and 10");
         }
-        if (normalRate.compareTo(reducedRate) < 0) {
-            throw new IllegalArgumentException("Normal rate must be greater than or equal to reduced rate.");
+        if (hourlyReducedRate.compareTo(BigDecimal.ZERO) < 0 || hourlyReducedRate.compareTo(new BigDecimal(10)) > 0) {
+            throw new IllegalArgumentException("Reduced rate must be between 0 and 10");
         }
-
-        // Validate periods for overlap
-        for (Period p1 : normalPeriods) {
-            for (Period p2 : reducedPeriods) {
-                if (p1.overlaps(p2)) {
-                    throw new IllegalArgumentException("Normal and reduced periods cannot overlap.");
-                }
-            }
+        if (hourlyNormalRate.compareTo(hourlyReducedRate) < 0) {
+            throw new IllegalArgumentException("Normal rate must be greater than or equal to reduced rate");
         }
-
         this.kind = kind;
-        this.reducedPeriods = reducedPeriods;
         this.normalPeriods = normalPeriods;
-        this.normalRate = normalRate;
-        this.reducedRate = reducedRate;
+        this.reducedPeriods = reducedPeriods;
+        this.hourlyNormalRate = hourlyNormalRate;
+        this.hourlyReducedRate = hourlyReducedRate;
+
+        // Validate periods
+        validatePeriods();
     }
 
-    // Calculate method
     public BigDecimal calculate(Period periodStay) {
         BigDecimal totalCharge = BigDecimal.ZERO;
 
-        // Calculate charge for normal periods
-        for (Period normalPeriod : normalPeriods) {
-            if (periodStay.overlaps(normalPeriod)) {
-                int overlapHours = calculateOverlapHours(periodStay, normalPeriod);
-                totalCharge = totalCharge.add(normalRate.multiply(BigDecimal.valueOf(overlapHours)));
+        // Loop through each hour in the stay
+        for (int hour = periodStay.getStartHour(); hour < periodStay.getEndHour(); hour++) {
+            if (isInNormalPeriod(hour)) {
+                totalCharge = totalCharge.add(hourlyNormalRate);
+            } else if (isInReducedPeriod(hour)) {
+                totalCharge = totalCharge.add(hourlyReducedRate);
             }
         }
 
-        // Calculate charge for reduced periods
-        for (Period reducedPeriod : reducedPeriods) {
-            if (periodStay.overlaps(reducedPeriod)) {
-                int overlapHours = calculateOverlapHours(periodStay, reducedPeriod);
-                totalCharge = totalCharge.add(reducedRate.multiply(BigDecimal.valueOf(overlapHours)));
-            }
-        }
-
-        // Return the final amount rounded to 2 decimal places
-        return totalCharge.setScale(2, BigDecimal.ROUND_HALF_UP);
+        // Return total charge rounded to two decimal places
+        return totalCharge.setScale(2, RoundingMode.HALF_UP);
     }
 
-    // Helper method to calculate overlapping hours between two periods
-    private int calculateOverlapHours(Period stayPeriod, Period ratePeriod) {
-        int overlapStart = Math.max(stayPeriod.getStartHour(), ratePeriod.getStartHour());
-        int overlapEnd = Math.min(stayPeriod.getEndHour(), ratePeriod.getEndHour());
-        return Math.max(0, overlapEnd - overlapStart);  // Ensure non-negative
+    private boolean isInNormalPeriod(int hour) {
+        // Check if the hour is in any of the normal periods
+        for (Period normal : normalPeriods) {
+            if (normal.overlaps(new Period(hour, hour + 1))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isInReducedPeriod(int hour) {
+        // Check if the hour is in any of the reduced periods
+        for (Period reduced : reducedPeriods) {
+            if (reduced.overlaps(new Period(hour, hour + 1))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void validatePeriods() {
+        // Ensure no overlapping periods within normal or reduced periods
+        validateNoOverlappingPeriods(normalPeriods);
+        validateNoOverlappingPeriods(reducedPeriods);
+
+        // Ensure normal and reduced periods do not overlap
+        for (Period normal : normalPeriods) {
+            for (Period reduced : reducedPeriods) {
+                if (normal.overlaps(reduced)) {
+                    throw new IllegalArgumentException("Normal and reduced periods must not overlap");
+                }
+            }
+        }
+    }
+
+    private void validateNoOverlappingPeriods(ArrayList<Period> periods) {
+        for (int i = 0; i < periods.size(); i++) {
+            for (int j = i + 1; j < periods.size(); j++) {
+                if (periods.get(i).overlaps(periods.get(j))) {
+                    throw new IllegalArgumentException("Periods must not overlap");
+                }
+            }
+        }
+    }
+
+    // Getters for testing purposes
+    public CarParkKind getKind() {
+        return kind;
+    }
+
+    public BigDecimal getHourlyNormalRate() {
+        return hourlyNormalRate;
+    }
+
+    public BigDecimal getHourlyReducedRate() {
+        return hourlyReducedRate;
+    }
+
+    public ArrayList<Period> getNormalPeriods() {
+        return normalPeriods;
+    }
+
+    public ArrayList<Period> getReducedPeriods() {
+        return reducedPeriods;
     }
 }
+
 // ChatGPT made the dummy classes so that the tests won't error
