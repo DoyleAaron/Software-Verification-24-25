@@ -116,4 +116,28 @@ public class DoyleAaronPeriodTests {
 
         assertTrue(period1.overlaps(period2));
     }
+
+    @Test
+    void DurationMethodTestNumber1() {
+        // This is to test a valid duration
+        int duration = 8;
+        Period period = new Period(12,20);
+        assertEquals(duration, period.duration());
+    }
+
+    @Test
+    void DurationMethodTestNumber2() {
+        // This is to test duration with the lower boundary
+        int duration = 5;
+        Period period = new Period(0,5);
+        assertEquals(duration, period.duration());
+    }
+
+    @Test
+    void DurationMethodTestNumber3() {
+        // This is to test duration with the upper boundary
+        int duration = 4;
+        Period period = new Period(20,24);
+        assertEquals(duration, period.duration());
+    }
 }
