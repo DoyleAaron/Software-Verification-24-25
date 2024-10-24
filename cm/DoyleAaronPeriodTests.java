@@ -80,5 +80,40 @@ public class DoyleAaronPeriodTests {
             new Period(startHour, endHour);
         });
     }
-    
+
+    @Test
+    void OverlapsMethodTestNumber1() {
+        // This to test when there is an overlap occurring between the periods
+        Period period1 = new Period(12,15);
+        Period period2 = new Period(12,17);
+
+        assertTrue(period1.overlaps(period2));
+    }
+
+    @Test
+    void OverlapsMethodTestNumber2() {
+        // This is to test when there is no overlap between the periods
+        Period period1 = new Period(12,15);
+        Period period2 = new Period(20,23);
+
+        assertFalse(period1.overlaps(period2));
+    }
+
+    @Test
+    void OverlapsMethodTestNumber3() {
+        // This is to test no overlap on the boundary of the periods
+        Period period1 = new Period(12,15);
+        Period period2 = new Period(15,18);
+
+        assertFalse(period1.overlaps(period2));
+    }
+
+    @Test
+    void OverlapsMethodTestNumber4() {
+        // This is to test when the periods are the exact same
+        Period period1 = new Period(12,15);
+        Period period2 = new Period(12,15);
+
+        assertTrue(period1.overlaps(period2));
+    }
 }
