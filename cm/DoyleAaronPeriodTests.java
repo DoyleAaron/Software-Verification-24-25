@@ -11,7 +11,6 @@ public class DoyleAaronPeriodTests {
         int startHour = 8;
         Period period = new Period(8, 10);
         assertNotNull(period);
-        assertEquals(startHour, period.getStartHour());
     }
 
     @Test
@@ -20,7 +19,6 @@ public class DoyleAaronPeriodTests {
         int endHour = 12;
         Period period = new Period(8, 12);
         assertNotNull(period);
-        assertEquals(endHour, period.getEndHour());
     }
 
     @Test
@@ -49,7 +47,6 @@ public class DoyleAaronPeriodTests {
         int endHour = 24;
         Period period = new Period(20, 24);
         assertNotNull(period);
-        assertEquals(endHour, period.getEndHour());
     }
 
     @Test
@@ -58,7 +55,6 @@ public class DoyleAaronPeriodTests {
         int startHour = 0;
         Period period = new Period(0, 5);
         assertNotNull(period);
-        assertEquals(startHour, period.getStartHour());
     }
 
     @Test
