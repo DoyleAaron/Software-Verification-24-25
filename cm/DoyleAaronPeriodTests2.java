@@ -2,6 +2,9 @@ package cm;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -73,6 +76,16 @@ public class DoyleAaronPeriodTests2 {
         // This is testing for when the start and end time are the same
         int startHour = 12;
         int endHour = 12;
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Period(startHour, endHour);
+        });
+    }
+
+    @Test
+    void PeriodClassTestNumber9() {
+        // This is testing for when the start time is above 24
+        int startHour = 25;
+        int endHour = 29;
         assertThrows(IllegalArgumentException.class, () -> {
             new Period(startHour, endHour);
         });

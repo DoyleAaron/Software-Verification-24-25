@@ -360,7 +360,7 @@ public class DoyleAaronRateTests2 {
 
     @Test
     void RateClassTestNumber17() {
-        // This is testing for when the periods in a single list are overlapping with each other
+        // This is testing for when the normal periods in a single list are overlapping with each other
         int normalPeriodStart1 = 9;
         int normalPeriodEnd1 = 12;
         int normalPeriodStart2 = 11;
@@ -411,7 +411,7 @@ public class DoyleAaronRateTests2 {
 
     @Test
     void RateClassTestNumber19() {
-        // This is testing for when the one of the periods is null
+        // This is testing for when the reducedPeriods is null
         int normalPeriodStart = 9;
         int normalPeriodEnd = 19;
         int reducedPeriodStart = 20;
@@ -429,6 +429,149 @@ public class DoyleAaronRateTests2 {
         assertThrows(IllegalArgumentException.class,
                 () -> {new Rate(kind, null, normalPeriod, hourlyNormalRate, hourlyReducedRate);}
         );
+    }
+
+    @Test
+    void RateClassTestNumber20() {
+        // This is testing for when the normalPeriods is null
+        int normalPeriodStart = 9;
+        int normalPeriodEnd = 19;
+        int reducedPeriodStart = 20;
+        int reducedPeriodEnd = 24;
+        CarParkKind kind = CarParkKind.STAFF;
+
+        ArrayList<Period> normalPeriod = new ArrayList<>();
+        normalPeriod.add(new Period(normalPeriodStart, normalPeriodEnd));
+        BigDecimal hourlyNormalRate = new BigDecimal(2);
+
+        ArrayList<Period> reducedPeriod = new ArrayList<>();
+        reducedPeriod.add(new Period(reducedPeriodStart, reducedPeriodEnd));
+        BigDecimal hourlyReducedRate = new BigDecimal(1);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> {new Rate(kind, reducedPeriod, null, hourlyNormalRate, hourlyReducedRate);}
+        );
+    }
+
+    @Test
+    void RateClassTestNumber21(){
+        // This is testing for when the reduced periods in a single list are overlapping with each other
+        int normalPeriodStart = 15;
+        int normalPeriodEnd = 18;
+
+
+        int reducedPeriodStart1 = 9;
+        int reducedPeriodEnd1 = 12;
+        int reducedPeriodStart2 = 11;
+        int reducedPeriodEnd2 = 14;
+
+        CarParkKind kind = CarParkKind.STAFF;
+
+        ArrayList<Period> normalPeriod = new ArrayList<>();
+        normalPeriod.add(new Period(normalPeriodStart, normalPeriodEnd));
+
+
+        ArrayList<Period> reducedPeriod = new ArrayList<>();
+        reducedPeriod.add(new Period(reducedPeriodStart1, reducedPeriodEnd1));
+        reducedPeriod.add(new Period(reducedPeriodStart2, reducedPeriodEnd2));
+
+        BigDecimal hourlyNormalRate = new BigDecimal(2);
+        BigDecimal hourlyReducedRate = new BigDecimal(1);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> {
+                    new Rate(kind, reducedPeriod, normalPeriod, hourlyNormalRate, hourlyReducedRate);
+                });
+    }
+
+    @Test
+    void RateClassTestNumber22(){
+        // This is testing for when the reduced periods in a single list are overlapping with the normal period
+        int normalPeriodStart = 11;
+        int normalPeriodEnd = 14;
+
+
+        int reducedPeriodStart1 = 9;
+        int reducedPeriodEnd1 = 12;
+        int reducedPeriodStart2 = 13;
+        int reducedPeriodEnd2 = 15;
+
+        CarParkKind kind = CarParkKind.STAFF;
+
+        ArrayList<Period> normalPeriod = new ArrayList<>();
+        normalPeriod.add(new Period(normalPeriodStart, normalPeriodEnd));
+
+
+        ArrayList<Period> reducedPeriod = new ArrayList<>();
+        reducedPeriod.add(new Period(reducedPeriodStart1, reducedPeriodEnd1));
+        reducedPeriod.add(new Period(reducedPeriodStart2, reducedPeriodEnd2));
+
+        BigDecimal hourlyNormalRate = new BigDecimal(2);
+        BigDecimal hourlyReducedRate = new BigDecimal(1);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> {
+                    new Rate(kind, reducedPeriod, normalPeriod, hourlyNormalRate, hourlyReducedRate);
+                });
+    }
+
+    @Test
+    void RateClassTestNumber23() {
+        // This is testing for when the normal periods in a single list are overlapping with the reduced period
+        int normalPeriodStart1 = 9;
+        int normalPeriodEnd1 = 12;
+        int normalPeriodStart2 = 13;
+        int normalPeriodEnd2 = 15;
+
+        int reducedPeriodStart = 11;
+        int reducedPeriodEnd = 14;
+
+        CarParkKind kind = CarParkKind.STAFF;
+
+        ArrayList<Period> normalPeriod = new ArrayList<>();
+        normalPeriod.add(new Period(normalPeriodStart1, normalPeriodEnd1));
+        normalPeriod.add(new Period(normalPeriodStart2, normalPeriodEnd2));
+
+        ArrayList<Period> reducedPeriod = new ArrayList<>();
+        reducedPeriod.add(new Period(reducedPeriodStart, reducedPeriodEnd));
+
+        BigDecimal hourlyNormalRate = new BigDecimal(2);
+        BigDecimal hourlyReducedRate = new BigDecimal(1);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> {
+                    new Rate(kind, reducedPeriod, normalPeriod, hourlyNormalRate, hourlyReducedRate);
+                });
+    }
+
+    @Test
+    void RateClassTestNumber24() {
+        // This is checking to ensure duplicate periods throw an error
+        int normalPeriodStart1 = 9;
+        int normalPeriodEnd1 = 12;
+        int normalPeriodStart2 = 10;
+        int normalPeriodEnd2 = 12;
+
+        int reducedPeriodStart = 12;
+        int reducedPeriodEnd = 14;
+
+        CarParkKind kind = CarParkKind.STAFF;
+
+        ArrayList<Period> normalPeriod = new ArrayList<>();
+        normalPeriod.add(new Period(normalPeriodStart1, normalPeriodEnd1));
+        normalPeriod.add(new Period(normalPeriodStart2, normalPeriodEnd2));
+        normalPeriod.add(new Period(normalPeriodStart2, normalPeriodEnd2));
+
+        ArrayList<Period> reducedPeriod = new ArrayList<>();
+        reducedPeriod.add(new Period(reducedPeriodStart, reducedPeriodEnd));
+
+        BigDecimal hourlyNormalRate = new BigDecimal(2);
+        BigDecimal hourlyReducedRate = new BigDecimal(1);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> {
+                    new Rate(kind, reducedPeriod, normalPeriod, hourlyNormalRate, hourlyReducedRate);
+                });
     }
 
     @Test
