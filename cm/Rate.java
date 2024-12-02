@@ -119,6 +119,12 @@ public class Rate {
                     cost = cost.multiply(new BigDecimal("0.75"));
                     return cost;
                 }
+            case MANAGEMENT:
+                if (cost.intValue() <= 4) {
+                    return new BigDecimal(4);
+                } else {
+                    return cost;
+                }
         }
     }
 
