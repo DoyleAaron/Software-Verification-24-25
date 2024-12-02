@@ -105,6 +105,12 @@ public class Rate {
                     cost = cost.divide(new BigDecimal(2));
                     return cost;
                 }
+            case STAFF:
+                if (cost.intValue() <= 16) {
+                    return cost;
+                } else {
+                    return new BigDecimal(16);
+                }
         }
     }
 
