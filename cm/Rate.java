@@ -93,8 +93,19 @@ public class Rate {
     public BigDecimal calculate(Period periodStay) {
         int normalRateHours = periodStay.occurences(normal);
         int reducedRateHours = periodStay.occurences(reduced);
-        return (this.hourlyNormalRate.multiply(BigDecimal.valueOf(normalRateHours))).add(
-                this.hourlyReducedRate.multiply(BigDecimal.valueOf(reducedRateHours)));
+        BigDecimal cost = (hourlyNormalRate.multiply(BigDecimal.valueOf(normalRateHours)))
+                .add(hourlyReducedRate.multiply(BigDecimal.valueOf(reducedRateHours)));
+
+        switch (kind) {
+            case VISITOR:
+                if (cost.intvalue() <= 10) {
+                    return new BigDecimal(0);
+                } else {
+                    cost = cost.subtract(new BigDecimal(10));
+                    cost = cost.divide(new BigDecimal(2));
+                    return cost;
+                }
+        }
     }
 
 }
