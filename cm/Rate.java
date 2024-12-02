@@ -111,6 +111,14 @@ public class Rate {
                 } else {
                     return new BigDecimal(16);
                 }
+            case STUDENT:
+                if(cost.intValue() <= 5.5) {
+                    return cost;
+                } else {
+                    cost = cost.subtract(new BigDecimal(5.5));
+                    cost = cost.multiply(new BigDecimal("0.75"));
+                    return cost;
+                }
         }
     }
 
