@@ -125,6 +125,8 @@ public class Rate {
                 } else {
                     return cost;
                 }
+            default:
+                throw new IllegalArgumentException("Invalid Kind given");
         }
     }
 
