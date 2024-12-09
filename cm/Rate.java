@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class Rate {
     private CarParkKind kind;
     private BigDecimal hourlyNormalRate;
@@ -98,7 +99,7 @@ public class Rate {
 
         switch (kind) {
             case VISITOR:
-                if (cost.intvalue() <= 10) {
+                if (cost.intValue() <= 10) {
                     return new BigDecimal(0);
                 } else {
                     cost = cost.subtract(new BigDecimal(10));
@@ -113,11 +114,12 @@ public class Rate {
                 }
             case STUDENT:
                 if(cost.intValue() <= 5.5) {
-                    return cost;
+                    return cost.setScale(2, BigDecimal.ROUND_HALF_UP);
                 } else {
                     cost = cost.subtract(new BigDecimal(5.5));
                     cost = cost.multiply(new BigDecimal("0.75"));
-                    return cost;
+                    cost = cost.add(new BigDecimal(5.5));
+                    return cost.setScale(2, BigDecimal.ROUND_HALF_UP);
                 }
             case MANAGEMENT:
                 if (cost.intValue() <= 4) {

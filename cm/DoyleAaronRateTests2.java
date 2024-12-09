@@ -756,4 +756,160 @@ public class DoyleAaronRateTests2 {
 
         assertEquals(expectedOutcome, rate.calculate(periodStay));
     }
+
+    @Test
+    void CalculateMethodTestNumber8() {
+        // This is testing that the visitor car park is free if the cost is below 10
+        int normalPeriodStart = 9;
+        int normalPeriodEnd = 19;
+        int reducedPeriodStart = 20;
+        int reducedPeriodEnd = 22;
+        CarParkKind kind = CarParkKind.VISITOR;
+
+        ArrayList<Period> normalPeriod = new ArrayList<>();
+        normalPeriod.add(new Period(normalPeriodStart, normalPeriodEnd));
+        BigDecimal hourlyNormalRate = new BigDecimal(2);
+
+        ArrayList<Period> reducedPeriod = new ArrayList<>();
+        reducedPeriod.add(new Period(reducedPeriodStart, reducedPeriodEnd));
+        BigDecimal hourlyReducedRate = new BigDecimal(1);
+
+        Rate rate = new Rate(kind, reducedPeriod, normalPeriod, hourlyNormalRate, hourlyReducedRate);
+
+        Period periodStay = new Period(21,24);
+
+        BigDecimal expectedOutcome = new BigDecimal("0");
+
+        assertEquals(expectedOutcome, rate.calculate(periodStay));
+    }
+
+    @Test
+    void CalculateMethodTestNumber9() {
+        // This is testing that the visitor car park is half price after the cost price 10 mark has been hit
+        int normalPeriodStart = 9;
+        int normalPeriodEnd = 19;
+        int reducedPeriodStart = 20;
+        int reducedPeriodEnd = 22;
+        CarParkKind kind = CarParkKind.VISITOR;
+
+        ArrayList<Period> normalPeriod = new ArrayList<>();
+        normalPeriod.add(new Period(normalPeriodStart, normalPeriodEnd));
+        BigDecimal hourlyNormalRate = new BigDecimal(10);
+
+        ArrayList<Period> reducedPeriod = new ArrayList<>();
+        reducedPeriod.add(new Period(reducedPeriodStart, reducedPeriodEnd));
+        BigDecimal hourlyReducedRate = new BigDecimal(1);
+
+        Rate rate = new Rate(kind, reducedPeriod, normalPeriod, hourlyNormalRate, hourlyReducedRate);
+
+        Period periodStay = new Period(11,14);
+
+        BigDecimal expectedOutcome = new BigDecimal("10");
+
+        assertEquals(expectedOutcome, rate.calculate(periodStay));
+    }
+
+    @Test
+    void CalculateMethodTestNumber10() {
+        // This is testing that the minimum payable is 4
+        int normalPeriodStart = 9;
+        int normalPeriodEnd = 19;
+        int reducedPeriodStart = 20;
+        int reducedPeriodEnd = 22;
+        CarParkKind kind = CarParkKind.MANAGEMENT;
+
+        ArrayList<Period> normalPeriod = new ArrayList<>();
+        normalPeriod.add(new Period(normalPeriodStart, normalPeriodEnd));
+        BigDecimal hourlyNormalRate = new BigDecimal(2);
+
+        ArrayList<Period> reducedPeriod = new ArrayList<>();
+        reducedPeriod.add(new Period(reducedPeriodStart, reducedPeriodEnd));
+        BigDecimal hourlyReducedRate = new BigDecimal(1);
+
+        Rate rate = new Rate(kind, reducedPeriod, normalPeriod, hourlyNormalRate, hourlyReducedRate);
+
+        Period periodStay = new Period(21,22);
+
+        BigDecimal expectedOutcome = new BigDecimal("4");
+
+        assertEquals(expectedOutcome, rate.calculate(periodStay));
+    }
+
+    @Test
+    void CalculateMethodTestNumber11() {
+        // This is testing that the minimum payable is 4 but gives the normal cost if its over 4
+        int normalPeriodStart = 9;
+        int normalPeriodEnd = 19;
+        int reducedPeriodStart = 20;
+        int reducedPeriodEnd = 22;
+        CarParkKind kind = CarParkKind.MANAGEMENT;
+
+        ArrayList<Period> normalPeriod = new ArrayList<>();
+        normalPeriod.add(new Period(normalPeriodStart, normalPeriodEnd));
+        BigDecimal hourlyNormalRate = new BigDecimal(2);
+
+        ArrayList<Period> reducedPeriod = new ArrayList<>();
+        reducedPeriod.add(new Period(reducedPeriodStart, reducedPeriodEnd));
+        BigDecimal hourlyReducedRate = new BigDecimal(1);
+
+        Rate rate = new Rate(kind, reducedPeriod, normalPeriod, hourlyNormalRate, hourlyReducedRate);
+
+        Period periodStay = new Period(11,14);
+
+        BigDecimal expectedOutcome = new BigDecimal("6");
+
+        assertEquals(expectedOutcome, rate.calculate(periodStay));
+    }
+
+    @Test
+    void CalculateMethodTestNumber12() {
+        // This is testing that the rate is normal below 5.50
+        int normalPeriodStart = 9;
+        int normalPeriodEnd = 19;
+        int reducedPeriodStart = 20;
+        int reducedPeriodEnd = 22;
+        CarParkKind kind = CarParkKind.STUDENT;
+
+        ArrayList<Period> normalPeriod = new ArrayList<>();
+        normalPeriod.add(new Period(normalPeriodStart, normalPeriodEnd));
+        BigDecimal hourlyNormalRate = new BigDecimal(2);
+
+        ArrayList<Period> reducedPeriod = new ArrayList<>();
+        reducedPeriod.add(new Period(reducedPeriodStart, reducedPeriodEnd));
+        BigDecimal hourlyReducedRate = new BigDecimal(1);
+
+        Rate rate = new Rate(kind, reducedPeriod, normalPeriod, hourlyNormalRate, hourlyReducedRate);
+
+        Period periodStay = new Period(11,13);
+
+        BigDecimal expectedOutcome = new BigDecimal("4.00");
+
+        assertEquals(expectedOutcome, rate.calculate(periodStay));
+    }
+
+    @Test
+    void CalculateMethodTestNumber13() {
+        // Testing that 25% reduction is applied when it's above 5.50
+        int normalPeriodStart = 9;
+        int normalPeriodEnd = 19;
+        int reducedPeriodStart = 20;
+        int reducedPeriodEnd = 22;
+        CarParkKind kind = CarParkKind.STUDENT;
+
+        ArrayList<Period> normalPeriod = new ArrayList<>();
+        normalPeriod.add(new Period(normalPeriodStart, normalPeriodEnd));
+        BigDecimal hourlyNormalRate = new BigDecimal(3);
+
+        ArrayList<Period> reducedPeriod = new ArrayList<>();
+        reducedPeriod.add(new Period(reducedPeriodStart, reducedPeriodEnd));
+        BigDecimal hourlyReducedRate = new BigDecimal(1.5);
+
+        Rate rate = new Rate(kind, reducedPeriod, normalPeriod, hourlyNormalRate, hourlyReducedRate);
+
+        Period periodStay = new Period(11, 15);
+
+        BigDecimal expectedOutcome = new BigDecimal("10.38");
+
+        assertEquals(expectedOutcome, rate.calculate(periodStay));
+    }
 }
